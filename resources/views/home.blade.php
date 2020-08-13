@@ -15,6 +15,7 @@
             <div class="col-12">
                 <div class="card">
                     <form action="{{ route('post.store') }}" method="POST">
+                        @csrf
                         <div class="card-header">Criar nova postagem</div>
                         <div class="card-body">
                             <label for="conteudo">Postagem</label>
@@ -59,18 +60,19 @@
                             Per aumento de cachacis, eu reclamis. 
                             Não sou faixa preta cumpadi, sou preto inteiris, inteiris. Praesent vel viverra nisi. 
                             Mauris aliquet nunc non turpis scelerisque, eget. 
-                            Si num tem leite então bota uma pinga aí cumpadi!  
+                            Si num tem leite então bota uma pinga aí cumpadi!
+                            A cerveja e a cachaça são os piores inimigos do homem. Mas o homem que foge dos seus inimigos é um covarde.  
                         @endcomentario
                     </div>
                     @auth
                         <hr>
                         <div>
-                            <form action="{{ route('comentario.store',1) }}" method="POST">
+                            <form action="{{ route('comment.store',1) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="postagem" value="1">
                                 <div class="form-group">
                                     <label for="comentario">Comentario</label>
-                                    <textarea name="comentario" id="comentario" class="form-control"></textarea>
+                                    <textarea name="comment" id="comment" class="form-control"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-sm">Salvar comentário</button>
                             </form>
@@ -86,7 +88,13 @@
                 <div class="card-body">
                     <p>
                         Texto com o conteúdo da postagem<br>
-                        Mussum Ipsum, cacilds vidis litro abertis. Em pé sem cair, deitado sem dormir, sentado sem cochilar e fazendo pose. Mé faiz elementum girarzis, nisi eros vermeio. Copo furadis é disculpa de bebadis, arcu quam euismod magna. Mauris nec dolor in eros commodo tempor. Aenean aliquam molestie leo, vitae iaculis nisl. 
+                        Mussum Ipsum, cacilds vidis litro abertis. 
+                        Em pé sem cair, deitado sem dormir, sentado sem cochilar e fazendo pose. 
+                        Mé faiz elementum girarzis, nisi eros vermeio. 
+                        Copo furadis é disculpa de bebadis, arcu quam euismod magna. 
+                        Mauris nec dolor in eros commodo tempor. 
+                        Tico tico tico tico, quantos ticom....
+                        Aenean aliquam molestie leo, vitae iaculis nisl. 
                     </p>
                     <hr>
                     <a href="#comentarios-2" data-toggle="collapse" aria-expanded="false" aria-controls="comentarios-2">
@@ -113,12 +121,12 @@
                     @auth
                         <hr>
                         <div>
-                            <form action="{{ route('comentario.store',1) }}" method="POST">
+                            <form action="{{ route('comment.store',1) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="postagem" value="1">
                                 <div class="form-group">
                                     <label for="comentario">Comentario</label>
-                                    <textarea name="comentario" id="comentario" class="form-control"></textarea>
+                                    <textarea name="comment" id="comment" class="form-control"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-sm">Salvar comentário</button>
                             </form>
@@ -127,6 +135,55 @@
                 </div>
             </div>
         </div>
+        @foreach($posts ?? '' as $post)
+            <div class="col-md-6 col-12">
+                <div class="card">
+                    <div style="display: flex;justify-content: space-between;" class="card-header">Titulo da postagem
+                    </div>
+                    <div class="card-body">
+                        <h5>Autor: {{$post->name}}</h5>
+                        <p>
+                            {!! $post->content !!}
+                        </p>
+                        <hr>
+                        <a href="#comentarios-{{$post->id}}" data-toggle="collapse" aria-expanded="false" aria-controls="comentarios-{{$post->id}}">
+                            <small>
+                                comentários ( {{count($post->comments)}} )
+                            </small>
+                        </a>
+                        @foreach($post->comments as $comment)
+                        <div class="my-2 comentarios collapse" id="comentarios-{{$post->id}}">
+                        @comentario(['autor'=>$comment->name])
+                            {{ $comment->comment }}
+                        @endcomentario
+                        </div>
+                        @endforeach
+                        @auth
+                            <hr>
+                            <div>
+                                <form action="{{ route('comment.store',1) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="postagem" value="{{$post->id}}">
+                                    <div class="form-group">
+                                    @if($errors->any())
+                                        <ul class="alert">
+                                        @foreach($errors->all() as $error)
+                                            <li>{{$error}}</li>
+                                        @endforeach
+                                        </ul>
+                                    @endif
+                                        <label for="comment">Comentario</label>
+                                        <textarea name="comment" id="comment" class="form-control"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Salvar comentário</button>
+                                </form>
+                            </div>    
+                        @endauth
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
     </div>
 </div>
 @endsection

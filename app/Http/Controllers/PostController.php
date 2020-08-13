@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
-
 class PostController extends Controller
 {
     /**
@@ -12,9 +11,17 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    private $post;
+    public function __construct(Post $post) {
+        $this->post = $post;
+    }
+
     public function index()
     {
-        //
+        $posts = Post::all();
+    
+        return view('home', compact('posts'));
     }
 
     /**
@@ -35,8 +42,11 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $this->post->create([
+            "name"=> auth()->user()->name,
+            "content"=>$request->conteudo ]);  
+        return redirect()->route("home");
+}
 
     /**
      * Display the specified resource.

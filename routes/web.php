@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,9 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::resource('post', 'PostController');
+Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('comentario', 'ComentarioController');
+Route::resources([
+    'comment' => 'CommentController',
+    'post' => 'PostController',
+]);
