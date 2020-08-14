@@ -18,8 +18,8 @@
                         @csrf
                         <div class="card-header">Criar nova postagem</div>
                         <div class="card-body">
-                            <label for="conteudo">Postagem</label>
-                            <textarea name="conteudo" id="conteudo" rows="10" cols="80" ></textarea>
+                            <textarea name="title" rows="1" cols="143" placeholder="Titulo"></textarea>
+                            <textarea name="conteudo" id="conteudo" rows="10" cols="80"></textarea>
                         </div>
                         <div class="card-footer d-flex flex-row-reverse">
                             <button type="submit" class="btn btn-success">Enviar</button>
@@ -138,7 +138,7 @@
         @foreach($posts ?? '' as $post)
             <div class="col-md-6 col-12">
                 <div class="card">
-                    <div style="display: flex;justify-content: space-between;" class="card-header">Titulo da postagem
+                    <div style="display: flex;justify-content: space-between;" class="card-header"><b>{{  $post->title  }}</b>
                     </div>
                     <div class="card-body">
                         <h5>Autor: {{$post->name}}</h5>

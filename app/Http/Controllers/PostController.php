@@ -44,6 +44,7 @@ class PostController extends Controller
     {
         $this->post->create([
             "name"=> auth()->user()->name,
+            "title"=>$request->title,
             "content"=>$request->conteudo ]);  
         return redirect()->route("home");
 }
