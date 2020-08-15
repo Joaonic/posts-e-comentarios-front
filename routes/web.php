@@ -17,7 +17,10 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/settings/delete', 'SettingsController@softdelete')->name('settings.softdelete');
+
 Route::resources([
     'comment' => 'CommentController',
     'post' => 'PostController',
+    'settings' => 'SettingsController'
 ]);

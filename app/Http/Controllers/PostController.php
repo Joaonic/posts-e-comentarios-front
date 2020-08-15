@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use Auth;
 class PostController extends Controller
 {
     /**
@@ -44,6 +45,7 @@ class PostController extends Controller
     {
         $this->post->create([
             "name"=> auth()->user()->name,
+            "email"=> auth()->user()->email,
             "title"=>$request->title,
             "content"=>$request->conteudo ]);  
         return redirect()->route("home");
@@ -90,7 +92,11 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Post $post)
-    {
-        //
+    {   
+        if($post->email != Auth::user()->email) return redirect()->back();
+        $post->comments()->delete();
+        $post->delete();
+        return redirect()->route("home");
+
     }
 }

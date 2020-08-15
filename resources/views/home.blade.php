@@ -139,7 +139,18 @@
             <div class="col-md-6 col-12">
                 <div class="card">
                     <div style="display: flex;justify-content: space-between;" class="card-header"><b>{{  $post->title  }}</b>
-                    </div>
+                    @auth
+                    @if($post->email == Auth::user()->email)
+                    <td>
+                        <form method="POST" action="{{route('post.destroy', $post->id)}}"> 
+                        @csrf 
+                        {{ method_field('DELETE') }} 
+                        <input class="btn btn-danger"  value="DELETE" type="submit" style="width:100px">
+                        </form>
+                    </td> 
+                    @endif
+                    @endauth 
+                </div>
                     <div class="card-body">
                         <h5>Autor: {{$post->name}}</h5>
                         <p>
